@@ -77,10 +77,13 @@ if __name__ == '__main__':
 
     out_dec_df = out_dec_df.set_index('functional_crop_type')
     out_dec_df.drop('country_name', axis=1).T.plot(kind='bar',stacked=True,color=plots.get_colors(5))
+    plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.09),ncol=5)
+    plt.tight_layout()
     plt.show()
 
     out_ann_df = out_ann_df.reset_index(level=0)
     out_ann_df.drop('country_name', axis=1).T.plot(kind='bar',stacked=True,color=plots.get_colors(5))
+    plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.09),ncol=5)
     plt.show()
 
 

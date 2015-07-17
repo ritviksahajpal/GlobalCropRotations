@@ -6,6 +6,12 @@ import numpy as np
 def iround(x, base = 10):
     return int(base * round(float(x)/base))
 
+def get_list_decades(lyrs):
+    return np.array([list(g) for k,g in itertools.groupby(lyrs, lambda i: i // 10)])
+
+def get_list_yrs(df):
+    return df.columns.values[4:]
+
 # Select data for a country/region by country code or name
 def select_data_by_country(df, cnt):
     cnt_df = df[df['country_name'] == cnt]
@@ -14,31 +20,18 @@ def select_data_by_country(df, cnt):
 
 # Aggregate years to decades and compute fraction
 # of each crop functional type in that decade
-def agg_CFT_by_decade():
-    pass
-
-def per_CFT_annual(df,year):
-    grp_df = df.groupby(['country_name', 'functional_crop_type']).agg({year: 'sum'})
-    pct_df = grp_df.groupby(level=0).apply(lambda x: 100*x/float(x.sum()))
-
-    return pct_df
-
-if __name__ == '__main__':
-    # Create empty data frame
+def per_CFT_by_decade(df,cnt_name):
     dec_df = pd.DataFrame()
-    per_df = pd.DataFrame()
-
-    # Read in data on FAO crop acreages globally
-    fao_file = pd.ExcelFile(constants.data_dir+os.sep+constants.FAO_FILE)
-    fao_df   = fao_file.parse(constants.FAO_SHEET)
 
     # Get list of years in FAO data
-    list_yrs = fao_df.columns.values[4:]
+    list_yrs = get_list_yrs(df)
+
     # Separate years into decades
-    yrs_dec  = np.array([list(g) for k,g in itertools.groupby(list_yrs, lambda i: i // 10)])
+    yrs_dec  = get_list_decades(list_yrs)
 
     # Select data by country
-    out_df   = select_data_by_country(fao_df,'United States of America')
+    out_df   = select_data_by_country(df,cnt_name)
+
     for dec in yrs_dec:
         dec_name = str(iround(dec[0]))+'s'
 
@@ -48,14 +41,36 @@ if __name__ == '__main__':
     # Join the decadal dataframe with country and crop functional type name columns
     dec_df     = pd.concat([out_df[['country_name', 'functional_crop_type']],dec_df],axis=1,join='inner')
 
+    return dec_df
+
+def per_CFT_annual(df,cnt_name):
+    per_df = pd.DataFrame()
+
+    # Select data by country
+    out_df   = select_data_by_country(df,cnt_name)
+
+    # Get list of years in FAO data
+    list_yrs = get_list_yrs(out_df)
+
     for yr in list_yrs:
-        df     = per_CFT_annual(out_df,yr)
-        per_df = pd.concat([per_df, df], axis=1, join='inner')
+        grp_df = out_df.groupby(['country_name', 'functional_crop_type']).agg({yr: 'sum'})
+        pct_df = grp_df.groupby(level=0).apply(lambda x: 100*x/float(x.sum()))
 
-    print per_df.head()
-    print '----'
-    print dec_df.head()
+        per_df = pd.concat([per_df, pct_df], axis=1, join='inner')
+
+    return per_df
+
+if __name__ == '__main__':
+    # Read in data on FAO crop acreages globally
+    fao_file = pd.ExcelFile(constants.data_dir+os.sep+constants.FAO_FILE)
+    fao_df   = fao_file.parse(constants.FAO_SHEET)
+
+    out_dec_df = per_CFT_by_decade(fao_df,'United States of America')
+    out_ann_df = per_CFT_annual(fao_df,'United States of America')
+
+    out_dec_df = out_dec_df.set_index('functional_crop_type')
+    out_dec_df.plot(kind='bar',stacked=True)
+
+    plt.show()
     pdb.set_trace()
-
-    agg_CFT_by_decade(out_df)
 

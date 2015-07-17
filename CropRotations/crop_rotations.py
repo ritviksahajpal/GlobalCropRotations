@@ -1,4 +1,4 @@
-import constants, glob, os, pdb, shutil, subprocess, logging, itertools
+import constants, glob, os, pdb, shutil, subprocess, logging, itertools, plots
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
@@ -69,8 +69,11 @@ if __name__ == '__main__':
     out_ann_df = per_CFT_annual(fao_df,'United States of America')
 
     out_dec_df = out_dec_df.set_index('functional_crop_type')
-    out_dec_df.plot(kind='bar',stacked=True)
+    out_dec_df.drop('country_name', axis=1).T.plot(kind='bar',stacked=True,color=plots.get_colors(5))
+    plt.show()
 
+    out_ann_df = out_ann_df.reset_index(level=0)
+    out_ann_df.drop('country_name', axis=1).T.plot(kind='bar',stacked=True,color=plots.get_colors(5))
     plt.show()
     pdb.set_trace()
 

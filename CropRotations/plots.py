@@ -16,11 +16,11 @@ def set_matplotlib_params():
     rcParams['font.serif']       = ['Helvetica']
     rcParams['figure.figsize']   = 7.3, 4.2
 
-def get_colors():
+def get_colors(num_colors):
     """
     Get colorbrewer colors, which are nicer
     """
-    bmap   = brewer2mpl.get_map('Accent','qualitative',6)
+    bmap   = brewer2mpl.get_map('Accent','qualitative',num_colors)
     return bmap.mpl_colors
 
 def simple_axis(ax):

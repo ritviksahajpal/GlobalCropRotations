@@ -60,10 +60,17 @@ def per_CFT_annual(df,cnt_name):
 
     return per_df
 
+# Read in data on FAO crop acreages globally
+def read_FAO_data():
+    try:
+        fao_file = pd.ExcelFile(constants.data_dir+os.sep+constants.FAO_FILE)
+    except:
+        logging.info('Error reading excel file on FAO data')
+
+    return fao_file.parse(constants.FAO_SHEET)
+
 if __name__ == '__main__':
-    # Read in data on FAO crop acreages globally
-    fao_file = pd.ExcelFile(constants.data_dir+os.sep+constants.FAO_FILE)
-    fao_df   = fao_file.parse(constants.FAO_SHEET)
+    fao_df   = read_FAO_data()
 
     out_dec_df = per_CFT_by_decade(fao_df,'United States of America')
     out_ann_df = per_CFT_annual(fao_df,'United States of America')
@@ -75,5 +82,5 @@ if __name__ == '__main__':
     out_ann_df = out_ann_df.reset_index(level=0)
     out_ann_df.drop('country_name', axis=1).T.plot(kind='bar',stacked=True,color=plots.get_colors(5))
     plt.show()
-    pdb.set_trace()
+
 

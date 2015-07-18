@@ -5,8 +5,8 @@ fao_data     = crop_func_areas_in_ha_by_country_and_year.xlsx
 fao_sheet    = CropFuncArea(ha)_country&year
 
 [PATHS]
-data_dir   = /Users/ritvik/Documents/Projects/GLM/Input/             ; Directory of FAO cropland data
-out_dir    = /Users/ritvik/Documents/Projects/GLM/Output/            ; Output directory
+data_dir   = C:\Users\ritvik\Documents\PhD\Projects\GLM\Input\  ;/Users/ritvik/Documents/Projects/GLM/Input/             ; Directory of FAO cropland data
+out_dir    = C:\Users\ritvik\Documents\PhD\Projects\GLM\Output\ ;/Users/ritvik/Documents/Projects/GLM/Output/            ; Output directory
 
 [PARAMETERS]
 START_YR    = 1961           ; Starting year of weather data

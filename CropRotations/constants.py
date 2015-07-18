@@ -1,4 +1,4 @@
-import os, logging, datetime, multiprocessing, pdb, ast, util
+import os, logging, multiprocessing, pdb, ast, util
 from ConfigParser import SafeConfigParser
 
 # Parse config file
@@ -15,14 +15,18 @@ END_YR      = parser.getint('PARAMETERS','END_YR')                    # Ending y
 TAG         = parser.get('PROJECT','TAG')                             # Tag of NARR folder
 FAO_FILE    = parser.get('PROJECT','fao_data')
 FAO_SHEET   = parser.get('PROJECT','fao_sheet')
+PROJ_NAME   = parser.get('PROJECT','project_name')
+DO_PARALLEL = parser.getboolean('PARAMETERS','DO_PARALLEL')           # Use multiprocessing or not?
 
 # Directories
 data_dir    = parser.get('PATHS','data_dir')+os.sep
-out_dir     = parser.get('PATHS','out_dir')+os.sep+parser.get('PROJECT','project_name')+os.sep
+out_dir     = parser.get('PATHS','out_dir')+os.sep+PROJ_NAME+os.sep
 
 # Create directories
 util.make_dir_if_missing(data_dir)
 util.make_dir_if_missing(out_dir)
+
+max_threads = multiprocessing.cpu_count() - 1
 
 # Logging
 LOG_FILENAME   = out_dir+os.sep+'Log_'+TAG+'.txt'

@@ -49,32 +49,6 @@ def per_CFT_by_decade(df,cnt_name):
     return dec_df
 
 ###############################################################################
-# Aggregate years to decades and compute median of fraction
-# of each crop functional type in that decade
-#
-###############################################################################
-def mean_CFT_by_decade(df,cnt_name):
-    dec_df = pd.DataFrame()
-
-    # Get list of years in FAO data
-    list_yrs = get_list_yrs(df)
-
-    # Separate years into decades
-    yrs_dec  = get_list_decades(list_yrs)
-
-    # Select data by country
-    out_df   = select_data_by_country(df,cnt_name)
-
-    for dec in yrs_dec:
-        dec_name = str(iround(dec[0]))+'s'
-        dec_df[dec_name] = out_df.ix[:,dec].mean(axis=1)/np.sum(out_df.ix[:,dec].mean(axis=1)) * 100
-
-    # Join the decadal dataframe with country and crop functional type name columns
-    dec_df     = pd.concat([out_df[['country_name', 'functional_crop_type']],dec_df],axis=1,join='inner')
-
-    return dec_df
-
-###############################################################################
 # per_CFT_annual
 #
 #

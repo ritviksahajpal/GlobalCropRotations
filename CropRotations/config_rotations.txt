@@ -1,8 +1,12 @@
 [PROJECT]
 project_name = Crop_Rotations                                        ; Name of project directory (to be created within out_dir)
 TAG          = CROP                                                  ; A log file is created as Log_<TAG>.txt
-fao_data     = crop_func_areas_in_ha_by_country_and_year.xlsx
-fao_sheet    = CropFuncArea(ha)_country&year
+fao_data     = FAO_results.xlsx ;crop_func_areas_in_ha_by_country_and_year.xlsx
+fao_sheet    = FAO_results ;CropFuncArea(ha)_country&year
+raw_fao_data = FAO_Crops_area_harvested_Data.xlsx
+raw_fao_shet = Production_Crops_E_All_Data.csv
+crop_lup     = crop_codes_names.xlsx
+crop_lup_sht = crop_codes_names.csv
 
 [PATHS]
 data_dir   = C:\Users\ritvik\Documents\PhD\Projects\GLM\Input\  ;/Users/ritvik/Documents/Projects/GLM/Input/             ; Directory of FAO cropland data
@@ -11,13 +15,3 @@ out_dir    = C:\Users\ritvik\Documents\PhD\Projects\GLM\Output\ ;/Users/ritvik/D
 [PARAMETERS]
 START_YR    = 1961           ; Starting year of weather data
 END_YR      = 2013           ; Ending year of weather data
-LAT_BOUNDS  = [41.5,49.5]    ; Lat boundary of study region
-LON_BOUNDS  = [-98.0,-81.0]  ; Lon boundary of study region
-EPIC_DLY    = iewedlst.dat   ; Name of EPIC daily weather station list file
-EPIC_MON    = iewealst.dat   ; Name of EPIC monthly weather station list file
-WXPMRUN     = WXPMRUN.DAT    ;
-WXPM_EXE    = WXPM3020.exe
-DO_PARALLEL = True           ; Use multiprocessing or not?
-DO_SITE     = False          ; Run for single site (True) or not (False)
-SITE_LAT    = 42.0           ; If DO_SITE is True, then lat
-SITE_LON    = 86.0           ; If DO_SITE is True, then lon

@@ -14,7 +14,7 @@ def set_matplotlib_params():
     rcParams['legend.fontsize']  = 11
     rcParams['font.family']      = 'sans-serif'
     rcParams['font.serif']       = ['Helvetica']
-    #rcParams['figure.figsize']   = 7.3, 4.2
+    rcParams['figure.figsize']   = 7.3, 4.2
 
 def get_colors(num_colors):
     """

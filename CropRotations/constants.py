@@ -5,6 +5,8 @@ from ConfigParser import SafeConfigParser
 parser = SafeConfigParser()
 parser.read('config_rotations.txt')
 
+FAO_REGION_CODE = 350
+
 ###############################################################################
 # User modifiable values
 #
@@ -15,8 +17,11 @@ END_YR      = parser.getint('PARAMETERS','END_YR')                    # Ending y
 TAG         = parser.get('PROJECT','TAG')                             # Tag of NARR folder
 FAO_FILE    = parser.get('PROJECT','fao_data')
 FAO_SHEET   = parser.get('PROJECT','fao_sheet')
+RAW_FAO     = parser.get('PROJECT','raw_fao_data')
+RAW_FAO_SHT = parser.get('PROJECT','raw_fao_shet')
+CROP_LUP    = parser.get('PROJECT','crop_lup')
+CROP_LUP_SHT= parser.get('PROJECT','crop_lup_sht')
 PROJ_NAME   = parser.get('PROJECT','project_name')
-DO_PARALLEL = parser.getboolean('PARAMETERS','DO_PARALLEL')           # Use multiprocessing or not?
 
 # Directories
 data_dir    = parser.get('PATHS','data_dir')+os.sep
@@ -25,8 +30,6 @@ out_dir     = parser.get('PATHS','out_dir')+os.sep+PROJ_NAME+os.sep
 # Create directories
 util.make_dir_if_missing(data_dir)
 util.make_dir_if_missing(out_dir)
-
-max_threads = multiprocessing.cpu_count() - 1
 
 # Logging
 LOG_FILENAME   = out_dir+os.sep+'Log_'+TAG+'.txt'
